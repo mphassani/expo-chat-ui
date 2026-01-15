@@ -55,7 +55,7 @@ export function MessageList({
   emptyStateTitle = 'Start a conversation',
   emptyStateSubtitle = 'Type a message below to get started',
 }: MessageListProps) {
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<FlatList<ChatMessage>>(null);
   const { colors } = theme;
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export function MessageList({
         ref={flatListRef}
         data={messages}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: ChatMessage) => item.id}
         contentContainerStyle={[
           styles.listContent,
           messages.length === 0 && styles.emptyListContent,

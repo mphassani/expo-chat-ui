@@ -1,17 +1,17 @@
 {
-  "name": "@tovia/chat-ui",
+  "name": "@cryterion/expo-chat-ui",
   "version": "1.0.0",
   "description": "A reusable chat UI component for Expo + React Native applications",
-  "author": "Tovia",
+  "author": "cryterion",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tovia/chat-ui.git"
+    "url": "git+https://github.com/mphassani/expo-chat-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/tovia/chat-ui/issues"
+    "url": "https://github.com/mphassani/expo-chat-ui/issues"
   },
-  "homepage": "https://github.com/tovia/chat-ui#readme",
+  "homepage": "https://github.com/mphassani/expo-chat-ui#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -53,7 +53,12 @@
     "expo-clipboard": ">=7.0.0"
   },
   "devDependencies": {
-    "@types/react": "~19.1.17",
+    "@expo/vector-icons": "^14.1.0",
+    "@types/react": "^18.2.79",
+    "expo": "^50.0.0",
+    "expo-clipboard": "^7.0.0",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
     "typescript": "~5.9.3"
   }
 }
