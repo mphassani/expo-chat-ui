@@ -1,0 +1,59 @@
+{
+  "name": "@tovia/chat-ui",
+  "version": "1.0.0",
+  "description": "A reusable chat UI component for Expo + React Native applications",
+  "author": "Tovia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tovia/chat-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tovia/chat-ui/issues"
+  },
+  "homepage": "https://github.com/tovia/chat-ui#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "chat",
+    "ui",
+    "component",
+    "messaging",
+    "conversation",
+    "chatbot"
+  ],
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.72.0",
+    "expo": ">=50.0.0",
+    "@expo/vector-icons": ">=14.0.0",
+    "expo-clipboard": ">=7.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.17",
+    "typescript": "~5.9.3"
+  }
+}
