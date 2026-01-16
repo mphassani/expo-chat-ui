@@ -5,7 +5,7 @@ A reusable chat UI component for Expo + React Native applications.
 ## Installation
 
 ```bash
-bun add @tovia/chat-ui
+bun add @cryterion/expo-chat-ui
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ bun add @tovia/chat-ui
 ### Basic Usage
 
 ```tsx
-import { Chat, ChatMessage } from '@tovia/chat-ui';
+import { Chat, ChatMessage } from '@cryterion/expo-chat-ui';
 
 function ChatScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
