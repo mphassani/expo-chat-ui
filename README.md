@@ -1,4 +1,4 @@
-# @tovia/chat-ui
+# @cryterion/expo-chat-ui
 
 A reusable chat UI component for Expo + React Native applications.
 
