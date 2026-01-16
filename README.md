@@ -45,7 +45,7 @@ function ChatScreen() {
 ### With Custom Theme
 
 ```tsx
-import { Chat, ChatTheme } from '@tovia/chat-ui';
+import { Chat, ChatTheme } from '@cryterion/expo-chat-ui';
 
 const customTheme: Partial<ChatTheme> = {
   colors: {
@@ -73,7 +73,7 @@ function ChatScreen() {
 You can also use the individual building blocks:
 
 ```tsx
-import { MessageList, ChatInput, MessageBubble } from '@tovia/chat-ui';
+import { MessageList, ChatInput, MessageBubble } from '@cryterion/expo-chat-ui';
 
 function CustomChat() {
   return (
