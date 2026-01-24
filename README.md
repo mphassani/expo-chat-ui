@@ -1,11 +1,11 @@
-# @tovia/chat-ui
+# @cryterion/expo-chat-ui
 
 A reusable chat UI component for Expo + React Native applications.
 
 ## Installation
 
 ```bash
-bun add @tovia/chat-ui
+bun add @cryterion/expo-chat-ui
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ bun add @tovia/chat-ui
 ### Basic Usage
 
 ```tsx
-import { Chat, ChatMessage } from '@tovia/chat-ui';
+import { Chat, ChatMessage } from '@cryterion/expo-chat-ui';
 
 function ChatScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -45,7 +45,7 @@ function ChatScreen() {
 ### With Custom Theme
 
 ```tsx
-import { Chat, ChatTheme } from '@tovia/chat-ui';
+import { Chat, ChatTheme } from '@cryterion/expo-chat-ui';
 
 const customTheme: Partial<ChatTheme> = {
   colors: {
@@ -73,7 +73,7 @@ function ChatScreen() {
 You can also use the individual building blocks:
 
 ```tsx
-import { MessageList, ChatInput, MessageBubble } from '@tovia/chat-ui';
+import { MessageList, ChatInput, MessageBubble } from '@cryterion/expo-chat-ui';
 
 function CustomChat() {
   return (
