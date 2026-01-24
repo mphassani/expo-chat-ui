@@ -88,6 +88,8 @@ export interface ChatProps {
   emptyStateTitle?: string;
   /** Empty state subtitle */
   emptyStateSubtitle?: string;
+  /** Keyboard vertical offset for KeyboardAvoidingView (defaults to 0) */
+  keyboardVerticalOffset?: number;
 }
 
 /**

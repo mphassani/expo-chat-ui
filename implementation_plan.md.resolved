@@ -1,0 +1,178 @@
+# Fix Keyboard Avoidance in expo-chat-ui Package
+
+## Problem
+
+The chat input in the `@cryterion/expo-chat-ui` package gets hidden behind the keyboard when users tap on it. This is a poor UX that prevents users from seeing what they're typing.
+
+**Root Cause**: The `KeyboardAvoidingView` is currently only wrapping the `ChatInput` component (lines 33-81 in [ChatInput.tsx](file:///Users/parsamacbook/Documents/Github%20Business/Tovia/node_modules/@cryterion/expo-chat-ui/src/components/ChatInput.tsx)), not the entire chat interface. This means:
+- The input itself moves up, but the message list doesn't adjust
+- The `keyboardVerticalOffset` is set to `0`, which doesn't account for headers or safe areas
+- The keyboard pushes the input off-screen because the avoiding view is too low in the component tree
+
+## Proposed Changes
+
+### Package Structure (`node_modules/@cryterion/expo-chat-ui/src/components`)
+
+#### [MODIFY] [Chat.tsx](file:///Users/parsamacbook/Documents/Github%20Business/Tovia/node_modules/@cryterion/expo-chat-ui/src/components/Chat.tsx)
+
+**Changes needed**:
+1. Import `KeyboardAvoidingView` and `Platform` from `react-native`
+2. Wrap the entire chat container with `KeyboardAvoidingView`
+3. Add a new optional prop `keyboardVerticalOffset?: number` to `ChatProps` type
+4. Remove the `KeyboardAvoidingView` will be removed from `ChatInput.tsx` to avoid nesting
+
+**Why**: Moving keyboard avoidance to the parent level ensures the entire chat interface (messages + input) adjusts properly when the keyboard appears.
+
+#### [MODIFY] [ChatInput.tsx](file:///Users/parsamacbook/Documents/Github%20Business/Tovia/node_modules/@cryterion/expo-chat-ui/src/components/ChatInput.tsx)
+
+**Changes needed**:
+1. Remove the `KeyboardAvoidingView` wrapper (lines 33-36 and 81)
+2. Keep the inner `View` container (starting at line 37)
+3. Update the component to return just the input container without keyboard avoidance
+
+**Why**: Prevents double-wrapping with `KeyboardAvoidingView` which can cause conflicts. The parent `Chat` component will handle this.
+
+#### [MODIFY] [types.ts](file:///Users/parsamacbook/Documents/Github%20Business/Tovia/node_modules/@cryterion/expo-chat-ui/src/types.ts)
+
+**Changes needed**:
+1. Add `keyboardVerticalOffset?: number` to the `ChatProps` interface
+2. Document that it defaults to `0` and consumers should set it based on their header/safe area heights
+
+**Why**: Allows consumers to customize the offset based on their app's layout (headers, safe areas, tab bars, etc.).
+
+---
+
+### Implementation Details
+
+#### Chat.tsx Structure
+```tsx
+export function Chat({
+  messages,
+  onSend,
+  isLoading,
+  disabled,
+  theme: themeProp,
+  renderEmptyState,
+  onCopyMessage,
+  placeholder,
+  emptyStateTitle,
+  emptyStateSubtitle,
+  keyboardVerticalOffset = 0,
+}: ChatProps) {
+  const theme = mergeTheme(themeProp);
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <MessageList
+          messages={messages}
+          isLoading={isLoading}
+          theme={theme}
+          renderEmptyState={renderEmptyState}
+          onCopyMessage={onCopyMessage}
+          emptyStateTitle={emptyStateTitle}
+          emptyStateSubtitle={emptyStateSubtitle}
+        />
+        <ChatInput
+          onSend={onSend}
+          disabled={disabled || isLoading}
+          theme={theme}
+          placeholder={placeholder}
+        />
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+```
+
+#### ChatInput.tsx Structure
+```tsx
+export function ChatInput({
+  onSend,
+  disabled,
+  theme,
+  placeholder = 'Type a message...',
+}: ChatInputProps) {
+  const [text, setText] = useState('');
+  const { colors } = theme;
+
+  // ... handler logic remains the same
+
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          borderTopColor: colors.border,
+        },
+      ]}
+    >
+      <View
+        style={[
+          styles.inputContainer,
+          { backgroundColor: colors.inputBackground },
+        ]}
+      >
+        {/* TextInput and send button remain the same */}
+      </View>
+    </View>
+  );
+}
+```
+
+## Verification Plan
+
+### Automated Tests
+Since this is a UI/UX fix, automated tests aren't the primary verification method, but you should:
+1. Ensure the package still builds without errors
+2. Verify TypeScript types are correct
+
+### Manual Verification
+The AI agent implementing this should:
+
+1. **Test on iOS Simulator**:
+   - Open the chat screen
+   - Tap on the input field
+   - Verify the keyboard appears and the input remains visible
+   - Type a message and verify it's visible
+   - Test with both single-line and multi-line messages
+
+2. **Test on Android Emulator**:
+   - Repeat the same steps as iOS
+   - Verify both `padding` and `height` behaviors work correctly
+
+3. **Test with Different Offsets**:
+   - Test with `keyboardVerticalOffset={0}` (default)
+   - Test with a custom offset like `keyboardVerticalOffset={100}` to simulate a header
+   - Verify the offset correctly adjusts the keyboard avoidance
+
+4. **Edge Cases**:
+   - Test with long message lists (scrolling while keyboard is open)
+   - Test rapid typing and message sending
+   - Test keyboard dismiss and re-open
+
+## Migration Notes
+
+> [!IMPORTANT]
+> This is a **non-breaking change**. The new `keyboardVerticalOffset` prop is optional and defaults to `0`, maintaining backward compatibility.
+
+Consumers using the package can optionally add the offset based on their layout:
+```tsx
+<Chat
+  messages={messages}
+  onSend={handleSend}
+  keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+/>
+```
+
+> [!TIP]
+> For apps using `react-native-safe-area-context`, calculate the offset as:
+> ```tsx
+> const insets = useSafeAreaInsets();
+> const offset = insets.top + headerHeight;
+> ```

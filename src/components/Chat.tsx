@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
 import { mergeTheme } from '../theme/defaultTheme';
 import { ChatProps } from '../types';
 import { ChatInput } from './ChatInput';
@@ -29,27 +29,34 @@ export function Chat({
   placeholder,
   emptyStateTitle,
   emptyStateSubtitle,
+  keyboardVerticalOffset = 0,
 }: ChatProps) {
   const theme = mergeTheme(themeProp);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <MessageList
-        messages={messages}
-        isLoading={isLoading}
-        theme={theme}
-        renderEmptyState={renderEmptyState}
-        onCopyMessage={onCopyMessage}
-        emptyStateTitle={emptyStateTitle}
-        emptyStateSubtitle={emptyStateSubtitle}
-      />
-      <ChatInput
-        onSend={onSend}
-        disabled={disabled || isLoading}
-        theme={theme}
-        placeholder={placeholder}
-      />
-    </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <MessageList
+          messages={messages}
+          isLoading={isLoading}
+          theme={theme}
+          renderEmptyState={renderEmptyState}
+          onCopyMessage={onCopyMessage}
+          emptyStateTitle={emptyStateTitle}
+          emptyStateSubtitle={emptyStateSubtitle}
+        />
+        <ChatInput
+          onSend={onSend}
+          disabled={disabled || isLoading}
+          theme={theme}
+          placeholder={placeholder}
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

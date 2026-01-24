@@ -1,8 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -30,55 +28,50 @@ export function ChatInput({
   const canSend = text.trim().length > 0 && !disabled;
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background,
+          borderTopColor: colors.border,
+        },
+      ]}
     >
       <View
         style={[
-          styles.container,
-          {
-            backgroundColor: colors.background,
-            borderTopColor: colors.border,
-          },
+          styles.inputContainer,
+          { backgroundColor: colors.inputBackground },
         ]}
       >
-        <View
+        <TextInput
+          style={[styles.input, { color: colors.text }]}
+          placeholder={placeholder}
+          placeholderTextColor={colors.placeholder}
+          value={text}
+          onChangeText={setText}
+          multiline
+          maxLength={2000}
+          editable={!disabled}
+          onSubmitEditing={handleSend}
+          blurOnSubmit={false}
+        />
+        <TouchableOpacity
           style={[
-            styles.inputContainer,
-            { backgroundColor: colors.inputBackground },
+            styles.sendButton,
+            {
+              backgroundColor: canSend
+                ? colors.primary
+                : colors.sendButtonDisabled,
+            },
           ]}
+          onPress={handleSend}
+          disabled={!canSend}
+          activeOpacity={0.7}
         >
-          <TextInput
-            style={[styles.input, { color: colors.text }]}
-            placeholder={placeholder}
-            placeholderTextColor={colors.placeholder}
-            value={text}
-            onChangeText={setText}
-            multiline
-            maxLength={2000}
-            editable={!disabled}
-            onSubmitEditing={handleSend}
-            blurOnSubmit={false}
-          />
-          <TouchableOpacity
-            style={[
-              styles.sendButton,
-              {
-                backgroundColor: canSend
-                  ? colors.primary
-                  : colors.sendButtonDisabled,
-              },
-            ]}
-            onPress={handleSend}
-            disabled={!canSend}
-            activeOpacity={0.7}
-          >
-            <Ionicons name="send" size={18} color="#FFFFFF" />
-          </TouchableOpacity>
-        </View>
+          <Ionicons name="send" size={18} color="#FFFFFF" />
+        </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
