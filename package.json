@@ -1,6 +1,6 @@
 {
   "name": "@cryterion/expo-chat-ui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A reusable chat UI component for Expo + React Native applications",
   "author": "cryterion",
   "license": "MIT",

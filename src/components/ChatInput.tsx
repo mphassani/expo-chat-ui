@@ -13,6 +13,9 @@ export function ChatInput({
   disabled,
   theme,
   placeholder = 'Type a message...',
+  autoCorrect = true,
+  spellCheck = true,
+  keyboardType = 'default',
 }: ChatInputProps) {
   const [text, setText] = useState('');
   const { colors } = theme;
@@ -54,6 +57,9 @@ export function ChatInput({
           editable={!disabled}
           onSubmitEditing={handleSend}
           blurOnSubmit={false}
+          autoCorrect={autoCorrect}
+          spellCheck={spellCheck}
+          keyboardType={keyboardType}
         />
         <TouchableOpacity
           style={[

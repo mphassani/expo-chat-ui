@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { KeyboardTypeOptions } from 'react-native';
 
 /**
  * Represents a single chat message
@@ -90,6 +91,12 @@ export interface ChatProps {
   emptyStateSubtitle?: string;
   /** Keyboard vertical offset for KeyboardAvoidingView (defaults to 0) */
   keyboardVerticalOffset?: number;
+  /** Enable/disable autocorrect (defaults to true) */
+  autoCorrect?: boolean;
+  /** Enable/disable spell check (defaults to true) */
+  spellCheck?: boolean;
+  /** Keyboard type (defaults to 'default') */
+  keyboardType?: KeyboardTypeOptions;
 }
 
 /**
@@ -136,4 +143,10 @@ export interface ChatInputProps {
   theme: ChatTheme;
   /** Placeholder text */
   placeholder?: string;
+  /** Enable/disable autocorrect (defaults to true) */
+  autoCorrect?: boolean;
+  /** Enable/disable spell check (defaults to true) */
+  spellCheck?: boolean;
+  /** Keyboard type (defaults to 'default') */
+  keyboardType?: KeyboardTypeOptions;
 }

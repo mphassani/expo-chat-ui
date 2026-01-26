@@ -30,6 +30,9 @@ export function Chat({
   emptyStateTitle,
   emptyStateSubtitle,
   keyboardVerticalOffset = 0,
+  autoCorrect,
+  spellCheck,
+  keyboardType,
 }: ChatProps) {
   const theme = mergeTheme(themeProp);
 
@@ -54,6 +57,9 @@ export function Chat({
           disabled={disabled || isLoading}
           theme={theme}
           placeholder={placeholder}
+          autoCorrect={autoCorrect}
+          spellCheck={spellCheck}
+          keyboardType={keyboardType}
         />
       </View>
     </KeyboardAvoidingView>
