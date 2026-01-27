@@ -186,7 +186,7 @@ chore: update dependencies
 
 ## Release Process
 
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) for automated versioning and publishing.
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) for automated versioning and publishing on NPM.
 
 **How it works:**
 - When commits are pushed to `main`, semantic-release analyzes commit messages
