@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/mphassani/expo-chat-ui/compare/v1.0.0...v1.1.0) (2026-01-27)
+
+
+### Features
+
+* Addition of automated release ([7c2f187](https://github.com/mphassani/expo-chat-ui/commit/7c2f187c7fc316a125aee345af45abd10f8d4743))
+
 # 1.0.0 (2026-01-27)
 
 
