@@ -133,6 +133,73 @@ interface ChatTheme {
 }
 ```
 
+## Contributing
+
+We welcome contributions! This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automated versioning and releases.
+
+### Commit Message Format
+
+All commits must follow the conventional commit format:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:**
+- `feat:` - A new feature (triggers minor version bump)
+- `fix:` - A bug fix (triggers patch version bump)
+- `docs:` - Documentation changes only
+- `style:` - Code style changes (formatting, missing semicolons, etc.)
+- `refactor:` - Code changes that neither fix bugs nor add features
+- `perf:` - Performance improvements
+- `test:` - Adding or updating tests
+- `chore:` - Maintenance tasks, dependency updates, etc.
+
+**Breaking Changes:**
+- Add `!` after the type/scope (e.g., `feat!:`) or
+- Include `BREAKING CHANGE:` in the footer
+
+This triggers a major version bump.
+
+**Examples:**
+```bash
+feat: add message reactions
+fix(input): disable autocorrect on iOS
+feat(theme)!: replace color system with new tokens
+docs: update installation instructions
+chore: update dependencies
+```
+
+### Development Workflow
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/my-feature`
+3. Make your changes
+4. Run type check: `bun run typecheck`
+5. Commit using conventional commits: `git commit -m "feat: add my feature"`
+6. Push to your fork: `git push origin feat/my-feature`
+7. Open a Pull Request
+
+## Release Process
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) for automated versioning and publishing.
+
+**How it works:**
+- When commits are pushed to `main`, semantic-release analyzes commit messages
+- Based on conventional commits, it determines the next version number
+- Automatically updates `package.json` and generates `CHANGELOG.md`
+- Creates a GitHub release with release notes
+- Publishes the package to npm
+
+**Version Bumping:**
+- `fix:` commits → Patch release (1.0.0 → 1.0.1)
+- `feat:` commits → Minor release (1.0.0 → 1.1.0)
+- `BREAKING CHANGE:` → Major release (1.0.0 → 2.0.0)
+
 ## License
 
 MIT
