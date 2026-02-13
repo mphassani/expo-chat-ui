@@ -54,6 +54,9 @@ export function MessageList({
   onCopyMessage,
   emptyStateTitle = 'Start a conversation',
   emptyStateSubtitle = 'Type a message below to get started',
+  messageFormat = 'plain',
+  markdownRoles = ['assistant', 'system'],
+  renderMessageContent,
 }: MessageListProps) {
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
   const { colors } = theme;
@@ -67,7 +70,14 @@ export function MessageList({
   }, [messages.length]);
 
   const renderItem = ({ item }: { item: ChatMessage }) => (
-    <MessageBubble message={item} theme={theme} onCopy={onCopyMessage} />
+    <MessageBubble
+      message={item}
+      theme={theme}
+      onCopy={onCopyMessage}
+      messageFormat={messageFormat}
+      markdownRoles={markdownRoles}
+      renderMessageContent={renderMessageContent}
+    />
   );
 
   const renderEmptyStateComponent = () => {

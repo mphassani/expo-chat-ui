@@ -1,8 +1,11 @@
 // Types
 export type {
   ChatMessage,
+  ChatMessageRole,
   ChatTheme,
   ChatThemeColors,
+  MessageFormat,
+  RenderMessageContentArgs,
   ChatProps,
   MessageBubbleProps,
   MessageListProps,

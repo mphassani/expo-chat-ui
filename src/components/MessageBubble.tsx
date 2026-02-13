@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
+import Markdown from 'react-native-markdown-display';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ChatMessage, MessageBubbleProps } from '../types';
@@ -19,13 +20,96 @@ async function defaultCopyToClipboard(message: ChatMessage): Promise<void> {
   await Clipboard.setStringAsync(message.content);
 }
 
-export function MessageBubble({ message, theme, onCopy }: MessageBubbleProps) {
+export function MessageBubble({
+  message,
+  theme,
+  onCopy,
+  messageFormat = 'plain',
+  markdownRoles = ['assistant', 'system'],
+  renderMessageContent,
+}: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const { colors } = theme;
 
   const backgroundColor = isUser ? colors.userBubble : colors.assistantBubble;
   const textColor = isUser ? colors.userText : colors.assistantText;
   const mutedColor = isUser ? colors.userBubbleMuted : colors.assistantBubbleMuted;
+  const shouldRenderMarkdown = messageFormat === 'markdown' && markdownRoles.includes(message.role);
+  const codeBackgroundColor = isUser ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.12)';
+
+  const defaultContent = shouldRenderMarkdown ? (
+    <Markdown
+      style={{
+        body: {
+          color: textColor,
+          fontSize: 16,
+          lineHeight: 22,
+          marginTop: 0,
+          marginBottom: 0,
+        },
+        paragraph: {
+          color: textColor,
+          fontSize: 16,
+          lineHeight: 22,
+          marginTop: 0,
+          marginBottom: 0,
+        },
+        text: {
+          color: textColor,
+        },
+        strong: {
+          color: textColor,
+          fontWeight: '700',
+        },
+        em: {
+          color: textColor,
+          fontStyle: 'italic',
+        },
+        code_inline: {
+          color: textColor,
+          backgroundColor: codeBackgroundColor,
+          borderRadius: 4,
+          paddingHorizontal: 4,
+          paddingVertical: 2,
+        },
+        code_block: {
+          color: textColor,
+          backgroundColor: codeBackgroundColor,
+          borderRadius: 8,
+          padding: 8,
+        },
+        fence: {
+          color: textColor,
+          backgroundColor: codeBackgroundColor,
+          borderRadius: 8,
+          padding: 8,
+        },
+        list_item: {
+          color: textColor,
+        },
+        blockquote: {
+          color: textColor,
+          borderLeftColor: mutedColor,
+        },
+      }}
+    >
+      {message.content}
+    </Markdown>
+  ) : (
+    <Text style={[styles.messageText, { color: textColor }]}>
+      {message.content}
+    </Text>
+  );
+
+  const content = renderMessageContent
+    ? renderMessageContent({
+        message,
+        isUser,
+        theme,
+        defaultContent,
+        isMarkdown: shouldRenderMarkdown,
+      })
+    : defaultContent;
 
   const handleCopy = () => {
     if (onCopy) {
@@ -49,9 +133,7 @@ export function MessageBubble({ message, theme, onCopy }: MessageBubbleProps) {
           isUser ? styles.userBubble : styles.assistantBubble,
         ]}
       >
-        <Text style={[styles.messageText, { color: textColor }]}>
-          {message.content}
-        </Text>
+        {content}
         <View style={styles.footer}>
           <Text style={[styles.timestamp, { color: mutedColor }]}>
             {formatTime(message.timestamp)}
