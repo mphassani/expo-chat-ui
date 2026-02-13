@@ -33,6 +33,9 @@ export function Chat({
   autoCorrect,
   spellCheck,
   keyboardType,
+  messageFormat = 'plain',
+  markdownRoles = ['assistant', 'system'],
+  renderMessageContent,
 }: ChatProps) {
   const theme = mergeTheme(themeProp);
 
@@ -51,6 +54,9 @@ export function Chat({
           onCopyMessage={onCopyMessage}
           emptyStateTitle={emptyStateTitle}
           emptyStateSubtitle={emptyStateSubtitle}
+          messageFormat={messageFormat}
+          markdownRoles={markdownRoles}
+          renderMessageContent={renderMessageContent}
         />
         <ChatInput
           onSend={onSend}

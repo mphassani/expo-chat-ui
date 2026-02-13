@@ -65,6 +65,26 @@ export interface ChatTheme {
   colors: ChatThemeColors;
 }
 
+/** Message display format */
+export type MessageFormat = 'plain' | 'markdown';
+
+/** Supported chat message roles */
+export type ChatMessageRole = ChatMessage['role'];
+
+/** Arguments for custom message content rendering */
+export interface RenderMessageContentArgs {
+  /** The message being rendered */
+  message: ChatMessage;
+  /** Whether the message is from the user */
+  isUser: boolean;
+  /** Active merged chat theme */
+  theme: ChatTheme;
+  /** Library-provided default content node */
+  defaultContent: ReactNode;
+  /** Whether markdown rendering is active for this message */
+  isMarkdown: boolean;
+}
+
 /**
  * Props for the main Chat component
  */
@@ -97,6 +117,12 @@ export interface ChatProps {
   spellCheck?: boolean;
   /** Keyboard type (defaults to 'default') */
   keyboardType?: KeyboardTypeOptions;
+  /** Message rendering format (defaults to 'plain') */
+  messageFormat?: MessageFormat;
+  /** Roles that should render markdown when messageFormat is 'markdown' */
+  markdownRoles?: ChatMessageRole[];
+  /** Fully customize how message body content is rendered */
+  renderMessageContent?: (args: RenderMessageContentArgs) => ReactNode;
 }
 
 /**
@@ -109,6 +135,12 @@ export interface MessageBubbleProps {
   theme: ChatTheme;
   /** Custom copy handler */
   onCopy?: (message: ChatMessage) => void;
+  /** Message rendering format */
+  messageFormat?: MessageFormat;
+  /** Roles that should render markdown when messageFormat is 'markdown' */
+  markdownRoles?: ChatMessageRole[];
+  /** Fully customize how message body content is rendered */
+  renderMessageContent?: (args: RenderMessageContentArgs) => ReactNode;
 }
 
 /**
@@ -129,6 +161,12 @@ export interface MessageListProps {
   emptyStateTitle?: string;
   /** Empty state subtitle */
   emptyStateSubtitle?: string;
+  /** Message rendering format */
+  messageFormat?: MessageFormat;
+  /** Roles that should render markdown when messageFormat is 'markdown' */
+  markdownRoles?: ChatMessageRole[];
+  /** Fully customize how message body content is rendered */
+  renderMessageContent?: (args: RenderMessageContentArgs) => ReactNode;
 }
 
 /**

@@ -68,6 +68,55 @@ function ChatScreen() {
 }
 ```
 
+### Markdown Messages
+
+```tsx
+import { Chat } from '@cryterion/expo-chat-ui';
+
+function ChatScreen() {
+  return (
+    <Chat
+      messages={messages}
+      onSend={handleSend}
+      messageFormat="markdown"
+    />
+  );
+}
+```
+
+By default, markdown rendering applies to `assistant` and `system` messages when `messageFormat="markdown"`.
+
+```tsx
+<Chat
+  messages={messages}
+  onSend={handleSend}
+  messageFormat="markdown"
+  markdownRoles={['assistant', 'user']}
+/>
+```
+
+### Custom Message Content Rendering
+
+```tsx
+import { Chat, RenderMessageContentArgs } from '@cryterion/expo-chat-ui';
+import { View } from 'react-native';
+
+function ChatScreen() {
+  return (
+    <Chat
+      messages={messages}
+      onSend={handleSend}
+      messageFormat="markdown"
+      renderMessageContent={({ defaultContent, isUser }: RenderMessageContentArgs) => (
+        <View style={{ opacity: isUser ? 0.95 : 1 }}>
+          {defaultContent}
+        </View>
+      )}
+    />
+  );
+}
+```
+
 ### Using Individual Components
 
 You can also use the individual building blocks:
@@ -98,6 +147,16 @@ function CustomChat() {
 | `theme` | `Partial<ChatTheme>` | No | Custom theme colors |
 | `renderEmptyState` | `ReactNode \| () => ReactNode` | No | Custom empty state |
 | `onCopyMessage` | `(message: ChatMessage) => void` | No | Custom copy handler |
+| `placeholder` | `string` | No | Input placeholder |
+| `emptyStateTitle` | `string` | No | Empty state title |
+| `emptyStateSubtitle` | `string` | No | Empty state subtitle |
+| `keyboardVerticalOffset` | `number` | No | Keyboard offset for iOS `KeyboardAvoidingView` |
+| `autoCorrect` | `boolean` | No | Toggle input autocorrect |
+| `spellCheck` | `boolean` | No | Toggle input spellcheck |
+| `keyboardType` | `KeyboardTypeOptions` | No | Input keyboard type |
+| `messageFormat` | `'plain' \| 'markdown'` | No | Message rendering mode (defaults to `'plain'`) |
+| `markdownRoles` | `('user' \| 'assistant' \| 'system')[]` | No | Roles rendered as markdown when `messageFormat='markdown'` (defaults to `['assistant','system']`) |
+| `renderMessageContent` | `(args: RenderMessageContentArgs) => ReactNode` | No | Full custom message content renderer |
 
 ### `ChatMessage` Type
 
@@ -108,6 +167,18 @@ interface ChatMessage {
   content: string;
   timestamp: number | Date;
   meta?: Record<string, unknown>;
+}
+```
+
+### `RenderMessageContentArgs` Type
+
+```ts
+interface RenderMessageContentArgs {
+  message: ChatMessage;
+  isUser: boolean;
+  theme: ChatTheme;
+  defaultContent: ReactNode;
+  isMarkdown: boolean;
 }
 ```
 
